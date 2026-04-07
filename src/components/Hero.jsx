@@ -1,11 +1,14 @@
 import React, { use } from 'react'
+import { useRef } from 'react';
+import { useEffect } from 'react';
+
 
 const Hero = () => {
     const videoRef = useRef();
 
     useEffect(()=>{
        if (videoRef.current) {
-        videoRef.current.playbackRate=2(); //if u want the video to play 2 times
+        videoRef.current.playbackRate=2; //if u want the video to play 2 times
        }
     },[]);
   return (

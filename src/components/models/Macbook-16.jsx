@@ -15,12 +15,14 @@ import useMacbookStore from '../../store';
 import { noChangeParts } from '../../constants';
 import * as THREE from 'three';
 import { useEffect } from 'react';
-
+import { Color, SRGBColorSpace } from 'three';
 export default function MacbookModel16(props) {
   const {color} = useMacbookStore();
   const { nodes, materials, scene } = useGLTF('/models/macbook-16-transformed.glb')
 
   const texture=useTexture('/screen.png')
+  texture.colorSpace = SRGBColorSpace;
+  texture.needsUpdate=true;
 
 
 useEffect(()=>{
@@ -53,7 +55,7 @@ useEffect(()=>{
       <mesh geometry={nodes.Object_82.geometry} material={materials.gMtYExgrEUqPfln} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_96.geometry} material={materials.PaletteMaterial003} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_107.geometry} material={materials.JvMFZolVCdpPqjj} rotation={[Math.PI / 2, 0, 0]} />
-      <mesh geometry={nodes.Object_123.geometry} material={materials.sfCQkHOWyrsLmor} rotation={[Math.PI / 2, 0, 0]} >
+      <mesh geometry={nodes.Object_123.geometry}  rotation={[Math.PI / 2, 0, 0]} >
         <meshBasicMaterial map={texture}/>
       </mesh>
       <mesh geometry={nodes.Object_127.geometry} material={materials.ZCDwChwkbBfITSW} rotation={[Math.PI / 2, 0, 0]} />

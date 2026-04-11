@@ -1,115 +1,99 @@
-import React, { useRef } from 'react'
-import { performanceImages } from '../constants'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { performanceImages, performanceImgPositions } from "../constants/index.js";
+import {useMediaQuery} from "react-responsive";
 
 const Performance = () => {
-  const sectionRef = useRef(null)
-  const paragraphRef = useRef(null)
+    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const sectionRef = useRef(null);
 
-  useGSAP(() => {
-    // Responsive check
-    const isDesktop = () => window.innerWidth > 1024
+    useGSAP(
+        () => {
+            const sectionEl = sectionRef.current;
+            if (!sectionEl) return;
 
-    // Clean up ScrollTriggers on re-runs
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+            // Text Animation
+            gsap.fromTo(
+                ".content p",
+                { opacity: 0, y: 10 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    ease: "power1.out",
+                    scrollTrigger: {
+                        trigger: ".content p",
+                        start: "top bottom",
+                        end: "top center",
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                    },
+                }
+            );
 
-    // Animate paragraph fade-in/up
-    gsap.fromTo(
-      paragraphRef.current,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: paragraphRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-          markers: false,
-          once: false,
-          refreshPriority: 1
-        }
-      }
-    )
+            if (isMobile) return;
 
-    // Animate images on desktop only
-    if (isDesktop()) {
-      // pin the section & scrub images in at once
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top center',
-          end: '+=80%',
-          scrub: true,
-          markers: false,
-          invalidateOnRefresh: true,
-          refreshPriority: 1
-        }
-      })
+            // Image Positioning Timeline
+            const tl = gsap.timeline({
+                defaults: { duration: 2, ease: "power1.inOut", overwrite: "auto" },
+                scrollTrigger: {
+                    trigger: sectionEl,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                },
+            });
 
-      performanceImages.forEach(({ id, left, right, bottom, transform }) => {
-        if (id === 'p5') return // skip p5 as instructed
+            // Position Each Performance Image
+            performanceImgPositions.forEach((item) => {
+                if (item.id === "p5") return;
 
-        // Initial: hidden and slightly offset (down and faded out)
-        const img = sectionRef.current.querySelector(`.${id}`)
-        if (img) {
-          timeline.fromTo(
-            img,
-            { opacity: 0, y: 60 },
-            {
-              opacity: 1,
-              y: 0,
-              left: left !== undefined ? left : 'auto',
-              right: right !== undefined ? right : 'auto',
-              bottom: bottom !== undefined ? bottom : 'auto',
-              transform: transform || 'none',
-              duration: 1,
-              ease: 'power3.out'
-            },
-            0 // all at the start of the timeline
-          )
-        }
-      })
-    }
+                const selector = `.${item.id}`;
+                const vars = {};
 
-    // Make sure triggers refresh on resize for responsiveness
-    const handleResize = () => ScrollTrigger.refresh()
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    }
-    // eslint-disable-next-line
-  }, [])
+                if (typeof item.left === "number") vars.left = `${item.left}%`;
+                if (typeof item.right === "number") vars.right = `${item.right}%`;
+                if (typeof item.bottom === "number") vars.bottom = `${item.bottom}%`;
 
-  return (
-    <section id='performance' ref={sectionRef}>
-      <h2> Next-level graphics performance. Game on.</h2>
+                if (item.transform) vars.transform = item.transform;
 
-      <div className='wrapper'>
-        {performanceImages.map(({ id, src }) =>
-          id === 'p5' ? null : (
-            <img key={id} src={src} alt={id} className={id} />
-          )
-        )}
-      </div>
+                tl.to(selector, vars, 0);
+            });
+        },
+        { scope: sectionRef, dependencies: [isMobile] }
+    );
 
-      <div className='component'>
-        <p ref={paragraphRef}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique fuga enim perspiciatis! Eius a, amet consequuntur ratione dicta et quisquam, maiores illo incidunt repellendus dolores, libero iste odio numquam facere.
-          {' '}
-          <span className='text-white'>
+    return (
+        <section id="performance" ref={sectionRef}>
+            <h2>Next-level graphics performance. Game on.</h2>
+
+             <div className="wrapper">
+                {performanceImages.map((item, index) => (
+                    <img
+                        key={index}
+                        src={item.src}
+                        className={item.id}
+                        alt={item.alt || `Performance Image #${index + 1}`}
+                    />
+                ))}
+             </div>
+
+            <div className="content">
+                <p>
+                    Run graphics-intensive workflows with a responsiveness that keeps up
+                    with your imagination. The M4 family of chips features a GPU with a
+                    second-generation hardware-accelerated ray tracing engine that renders
+                    images faster, so{" "}
+                    <span className="text-white">
             gaming feels more immersive and realistic than ever.
-          </span>{' '}
-        </p>
-      </div>
-    </section>
-  )
+          </span>{" "}
+                    And Dynamic Caching optimizes fast on-chip memory to dramatically
+                    increase average GPU utilization — driving a huge performance boost
+                    for the most demanding pro apps and games.
+                </p>
+            </div>
+        </section>
+    )
 }
-
 export default Performance

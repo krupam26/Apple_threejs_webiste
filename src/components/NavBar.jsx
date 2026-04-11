@@ -1,34 +1,29 @@
-import { link } from 'framer-motion/client'
-import React from 'react'
-import { navLinks } from '../constants'
+import {navLinks} from "../constants";
 
 const NavBar = () => {
-  return (
-    <header>
-        <nav>
-            <img src='/logo.svg' alt='logo'/>
-            <ul>
-                {navLinks.map(({label})=>(
-                    <li key={label}>
-                        <a href={label}>{label}</a>
-                    </li>
-                ))}
-            </ul>
+    return (
+        <header>
+            <nav>
+                <img  src="/logo.svg" alt="Apple logo" />
 
-<div className='flex-center gap-3'>
-    <button>
-        <img src='/search.svg' alt='search'/>
-    </button>
+                <ul>
+                    {navLinks.map(({ label }) => (
+                        <li key={label}>
+                            <a href={label}>{label}</a>
+                        </li>
+                    ))}
+                </ul>
 
-    <button>
-        <img src='/cart.svg' alt='cart'/>
-    </button>
-
-</div>
-
-        </nav>
-    </header>
-  )
+                <div className="flex-center gap-3">
+                    <button>
+                        <img src="/search.svg" alt="Search" />
+                    </button>
+                    <button>
+                        <img src="/cart.svg" alt="Cart" />
+                    </button>
+                </div>
+            </nav>
+        </header>
+    )
 }
-
 export default NavBar

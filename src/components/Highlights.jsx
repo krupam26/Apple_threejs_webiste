@@ -20,7 +20,7 @@ const Highlights = () => {
       ease: 'power1.inOut'
 
     })
-  })
+  }, { dependencies: [isMobile] })
 
   return (
    <section id='highlights'>

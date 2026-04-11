@@ -1,6 +1,5 @@
 import React from 'react'
 import { footerLinks } from '../constants'
-import { href } from 'react-router-dom'
 
 const Footer = () => {
   return (

@@ -1,4 +1,8 @@
+
 import {footerLinks} from "../constants/index.js";
+import React from 'react'
+import { footerLinks } from '../constants'
+
 
 const Footer = () => {
     return (

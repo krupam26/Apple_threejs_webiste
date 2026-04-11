@@ -8,10 +8,15 @@ The website features interactive **3D MacBook models, animated product sections,
 # 🚀 Features
 
 ✨ Interactive **3D MacBook Models (14" and 16")**
+
 ✨ Apple-style **product showcase layout**
+
 ✨ Smooth **scroll-based animations**
+
 ✨ Dynamic **product viewer**
+
 ✨ Responsive UI components
+
 ✨ Modular and scalable React architecture
 
 ---

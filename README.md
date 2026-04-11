@@ -132,8 +132,11 @@ You can deploy this project easily using:
 This project helped in understanding:
 
 3D rendering with Three.js
+
 Integrating React with WebGL
+
 Component-based UI design
+
 Performance optimization for 3D websites
 
 # 👩‍💻 Author

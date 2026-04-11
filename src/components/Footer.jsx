@@ -17,11 +17,11 @@ const Footer = () => {
 
 
         <ul>
-          {footerLinks.map(({label,link})=>{
+          {footerLinks.map(({label,link})=>(
             <li key={label}>
               <a href={link}>{label}</a>
             </li>
-          })}
+          ))}
         </ul>
       </div>
 
